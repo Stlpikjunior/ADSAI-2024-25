@@ -1,0 +1,64 @@
+import random as rd
+players = ['dove','hawk','random','tft']
+wins = {'dove':0,'hawk':0,'random':0,'tft':0}
+points = {'CC':[6,6],'CD':[2,9],'DC':[9,2],'DD':[3,3]}
+
+p1_points = 0
+p1_moves = []
+p2_points = 0
+p2_moves = []
+
+def match(p1,p2):
+    global p1_points,p1_moves,p2_points,p2_moves
+    if p1 == 'dove':
+        c_1 = 'C'
+    elif p1 == 'hawk':
+        c_1 = 'D'
+    elif p1 == 'random':
+        c_1 = rd.choice(['C','D'])
+    elif p1 == 'tft':
+        if len(p2_moves) == 0:
+            c_1 = 'C'
+        else:
+            c_1 = p2_moves[-1]
+
+    if p2 == 'dove':
+        c_2 = 'C'
+    elif p2 == 'hawk':
+        c_2 = 'D'
+    elif p2 == 'random':
+        c_2 = rd.choice(['C', 'D'])
+    elif p2 == 'tft':
+        if len(p1_moves) == 0:
+            c_2 = 'C'
+        else:
+            c_2 = p1_moves[-1]
+
+    p1_moves.append(c_1)
+    p2_moves.append(c_2)
+
+    p1_points += points[str(c_1+c_2)][0]
+    p2_points += points[str(c_1+c_2)][1]
+
+def tournament(player_list):
+    global p1_points,p1_moves,p2_points,p2_moves
+    for x in player_list:
+        for y in player_list:
+            p1_points = 0
+            p1_moves = []
+            p2_points = 0
+            p2_moves = []
+            for i in range(100):
+                match(x,y)
+            if p1_points > p2_points:
+                wins[x] += 1
+            elif p2_points > p1_points:
+                wins[y] += 1
+            #print(x,p1_points,y,p2_points)
+
+
+tournament(players)
+print(wins)
+
+
+
